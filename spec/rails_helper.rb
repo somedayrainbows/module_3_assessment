@@ -19,18 +19,11 @@ DatabaseCleaner.strategy = :truncation
     end
   end
 
-Shoulda::Matchers.configure do |config|
-  config.integrate do |with|
-    with.test_framework :rspec
-    with.library :rails
-  end
-end
-
 VCR.configure do |config|
   config.configure_rspec_metadata!
   config.cassette_library_dir = "spec/fixtures/vcr_cassettes"
   config.hook_into :webmock
-  config.filter_sensitive_data('<WEATHER_KEY>') { ENV['WEATHER_KEY'] }
+  config.filter_sensitive_data('<KEY>') { ENV['KEY'] }
   config.allow_http_connections_when_no_cassette = true
 end
 
@@ -58,6 +51,7 @@ ActiveRecord::Migration.maintain_test_schema!
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  config.include FactoryGirl::Syntax::Methods
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
