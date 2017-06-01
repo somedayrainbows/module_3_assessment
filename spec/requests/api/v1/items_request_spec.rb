@@ -17,21 +17,52 @@ describe "items api" do
     expect(items.first).to_not have_key("created_at")
     expect(items.first).to_not have_key("updated_at")
   end
+
+  it "can return a single item by its id" do
+    item1 = create(:item)
+    item2 = create(:item)
+
+    get "/api/v1/items/#{item1.id}"
+
+    item = JSON.parse(response.body)
+
+    expect(response).to be_success
+    expect(response.code).to eq("200")
+    expect(item["id"]).to eq(item1.id)
+    expect(item).to have_key("name")
+    expect(item).to have_key("description")
+    expect(item).to have_key("image_url")
+    expect(item).to_not have_key("created_at")
+    expect(item).to_not have_key("updated_at")
+  end
+
+  it "can create an item" do
+    post "/api/v1/items?name=Guitar&description=Pretty&image_url=https://www.taylorguitars.com/sites/default/files/styles/multi_column_guitar_three/public/responsive-guitar-detail/Taylor-524ce-fr-2016.png?itok=ENjzoiOl"
+
+    expect(response.code).to eq("201")
+
+    item = JSON.parse(response.body)
+
+
+    expect(item).to be_a(Hash)
+    expect(item["item"]["name"]).to eq("Guitar")
+    expect(item["item"]).to have_key("description")
+    expect(item["item"]).to have_key("image_url")
+    expect(item["item"]).to_not have_key("created_at")
+    expect(item["item"]).to_not have_key("updated_at")
+  end
+
+  it "can delete an item" do
+    item1 = create(:item)
+    item2 = create(:item)
+    item3 = create(:item)
+
+    expect(Item.count).to eq(3)
+
+    delete "/api/v1/items/#{item1.id}"
+
+    expect(response.code).to eq("204")
+    expect(Item.count).to eq(2)
+    expect{ Item.find(item1.id) }.to raise_error(ActiveRecord::RecordNotFound)
+  end
 end
-
-
-# We need an API for the application that can both read and write data. Start by focusing on functionality for items. All of this should happen in a dedicated, versioned controller.
-#
-# When I send a GET request to `/api/v1/items`
-# I receive a 200 JSON response containing all items
-# And each item has an id, name, description, and image_url but not the created_at or updated_at
-#
-# When I send a GET request to `/api/v1/items/1`
-# I receive a 200 JSON response containing the id, name, description, and image_url but not the created_at or updated_at
-#
-# When I send a DELETE request to `/api/v1/items/1`
-# I receive a 204 JSON response if the record is successfully deleted
-#
-# When I send a POST request to `/api/v1/items` with a name, description, and image_url
-# I receive a 201 JSON  response if the record is successfully created
-# And I receive a JSON response containing the id, name, description, and image_url but not the created_at or updated_at
