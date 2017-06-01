@@ -8,16 +8,25 @@ gem "coffee-rails", "~> 4.0.0"
 gem "jquery-rails"
 gem "turbolinks"
 gem "jbuilder", "~> 2.0"
-gem "faker"
 gem "therubyracer"
 gem "less-rails-bootstrap"
-gem "minitest-rails"
+gem "figaro"
+gem "faraday"
+gem "awesome_print", require: "ap"
+gem "active_model_serializers"
+gem "faker", :git => 'git://github.com/stympy/faker.git', :branch => 'master'
 
 group :development do
   gem "spring"
 end
 
 group :development, :test do
-  gem "minitest-rails-capybara"
+  gem "capybara"
   gem "pry", :require => "pry"
+  gem "rspec-rails"
+  gem "vcr"
+  gem "webmock"
+  gem "factory_girl_rails"
+  gem "launchy"
+  gem "database_cleaner"
 end
