@@ -1,6 +1,7 @@
 class SearchController < ApplicationController
 
   def index
-    @search = Search.find_stores(params[:zipcode])
+    @search = Search.get_stores(params[:zipcode])
+    @stores = Search.new(@search)
   end
 end

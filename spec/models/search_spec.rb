@@ -5,11 +5,11 @@ describe Search do
     zipcode = "80202"
     service = SearchService.new({zipcode: zipcode})
     raw_results = service.find_stores
-    search = Search.new(raw_results)
-    binding.pry
+    search = Search.get_stores(raw_results)
+    stores = Search.new(search)
 
-    expect(search.total_stores).to eq("16")
-    expect(search["stores"].count).to eq(10)
+    expect(stores.total_stores).to eq(16)
+    binding.pry
 
   end
 end
