@@ -9,7 +9,7 @@ RSpec.feature "users can search nearby stores by zip" do
     VCR.use_cassette('search', record: :new_episodes) do
       visit root_path
 
-      fill_in "search_stores", with: "80202"
+      fill_in :zipcode, with: "80202"
       click_on "Search"
 
       expect(current_path).to eq(search_path)
