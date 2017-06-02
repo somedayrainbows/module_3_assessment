@@ -1,22 +1,23 @@
 require 'rails_helper'
 
-### 2. Consume 3rd party API
-# search and return Best Buy locations in our area.
-# Display the returned stores and their attributes returned from the API query in a logical and intuitive HTML layout. (This does not need to be styled).
-
 RSpec.feature "users can search nearby stores by zip" do
   scenario "as a user i can enter a zip and return closest stores" do
-    VCR.use_cassette('search', record: :new_episodes) do
+    VCR.use_cassette('search_feature', record: :new_episodes) do
       visit root_path
 
       fill_in :zipcode, with: "80202"
       click_on "Search"
 
       expect(current_path).to eq(search_path)
+      save_and_open_page
 
       within(".search_results") do
         expect(page).to have_content("16 total stores")
-
+        expect(page).to have_content("BEST BUY MOBILE - CHERRY CREEK SHOPPING CENTER")
+        expect(page).to have_content("City: DENVER")
+        expect(page).to have_content("Store type: Mobile SAS")
+        expect(page).to have_content("Store phone: 303-270-9189")
+        expect(page).to have_content("This store is 3.45 miles away from the zipcode you entered.")
       end
     end
   end

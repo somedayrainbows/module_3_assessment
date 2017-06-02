@@ -4,10 +4,11 @@
       <div class="search_stores">
 
       </div>
+      <p>Enter zipcode to search for closest stores:
       <%= form_tag :search, method: :get do %>
-        <%= text_field_tag :zipcode, "Search" %>
+        <%= text_field_tag :zipcode %>
         <%= submit_tag "Search" %>
-      <% end %>
+      <% end %></p>
     </div>
 
       <h1><%= @items.count %> Items</h1>

@@ -1,4 +1,15 @@
 <div class="search_results">
 
+  <p>
+    Displaying <%= @stores.get_stores.count %> of <%= @stores.total_stores %> total stores
+  </p>
+
+  <p>
+    <% @stores.get_stores.each do |store| %>
+      <b><%= store.name %></b><br>
+      City: <%= store.city %>  |  Store type: <%= store.type %>  |  Store phone: <%= store.phone %><br>
+      This store is <%= store.distance %> miles away from the zipcode you entered.<br><hr>
+    <% end %>
+  </p>
 
 </div>

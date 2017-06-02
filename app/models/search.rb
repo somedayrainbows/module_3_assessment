@@ -1,15 +1,21 @@
 class Search
-  # attr_reader :total_stores, :stores
-  #
-  # def initialize
-  #   @total_stores = raw_results[:total]
-  #   @stores = raw_results[:stores]
-  # end
+  attr_reader :zipcode
 
-  def self.get_stores(zipcode)
-    service = SearchService.new({zipcode: zipcode})
+  def initialize(zipcode)
+    @zipcode = zipcode.to_i
+  end
+
+  def get_stores
+    service = SearchService.new(zipcode)
     raw_results = service.find_stores
-    binding.pry
+    stores = raw_results[:stores].map do |store|
+      Store.new(store)
+    end
+  end
+
+  def total_stores
+    service = SearchService.new(zipcode)
+    raw_results = service.find_stores[:total]
   end
 
 end
